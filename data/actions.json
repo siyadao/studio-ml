@@ -1,0 +1,321 @@
+{
+  "schema_version": 2,
+  "agent_protocol_version": 1,
+  "actions": [
+    {
+      "id": "json.format",
+      "description": "校验、格式化或压缩 JSON 数据",
+      "risk": "read_only",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "input": "string",
+        "mode": "{format|minify}?"
+      },
+      "required_parameters": [
+        "input"
+      ],
+      "developer_tool": "json"
+    },
+    {
+      "id": "timestamp.convert",
+      "description": "Unix 时间戳与本地日期时间互转",
+      "risk": "read_only",
+      "sensitivity": "public",
+      "parameters": {
+        "timezone": "iana_timezone?",
+        "value": "string"
+      },
+      "required_parameters": [
+        "value"
+      ],
+      "developer_tool": "timestamp"
+    },
+    {
+      "id": "cron.parse",
+      "description": "解析 5 位或 6 位表达式并预览执行时间",
+      "risk": "read_only",
+      "sensitivity": "public",
+      "parameters": {
+        "expression": "cron_expression"
+      },
+      "required_parameters": [
+        "expression"
+      ],
+      "developer_tool": "cron"
+    },
+    {
+      "id": "base64.convert",
+      "description": "UTF-8 文本与 Base64 内容互转",
+      "risk": "read_only",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "input": "string",
+        "mode": "{encode|decode}?"
+      },
+      "required_parameters": [
+        "input"
+      ],
+      "developer_tool": "base64"
+    },
+    {
+      "id": "password.open",
+      "description": "本地加密保存的密码保险箱",
+      "risk": "read_only",
+      "sensitivity": "sensitive",
+      "parameters": {},
+      "required_parameters": [],
+      "developer_tool": "password"
+    },
+    {
+      "id": "number_base.convert",
+      "description": "在二、八、十、十六和三十六进制之间转换",
+      "risk": "read_only",
+      "sensitivity": "public",
+      "parameters": {
+        "target_radix": "u32?",
+        "value": "string"
+      },
+      "required_parameters": [
+        "value"
+      ],
+      "developer_tool": "number-base"
+    },
+    {
+      "id": "base64_image.convert",
+      "description": "图片文件与 Base64 Data URL 互转",
+      "risk": "write",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "input": "file_or_data_url",
+        "mode": "{encode|decode}?"
+      },
+      "required_parameters": [
+        "input"
+      ],
+      "developer_tool": "base64-image"
+    },
+    {
+      "id": "gzip.convert",
+      "description": "文本与 Base64 表示的 GZip 数据互转",
+      "risk": "read_only",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "input": "string",
+        "mode": "{compress|decompress}?"
+      },
+      "required_parameters": [
+        "input"
+      ],
+      "developer_tool": "gzip"
+    },
+    {
+      "id": "jwt.decode",
+      "description": "查看 JWT，或使用 HS256 生成签名令牌",
+      "risk": "read_only",
+      "sensitivity": "sensitive",
+      "parameters": {
+        "token": "secret_handle"
+      },
+      "required_parameters": [
+        "token"
+      ],
+      "developer_tool": "jwt"
+    },
+    {
+      "id": "qr_code.process",
+      "description": "从文本生成二维码，或读取二维码图片",
+      "risk": "write",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "input": "text_or_file",
+        "mode": "{generate|read}?"
+      },
+      "required_parameters": [
+        "input"
+      ],
+      "developer_tool": "qr-code"
+    },
+    {
+      "id": "url.convert",
+      "description": "对 URL 组件进行百分号编码或解码",
+      "risk": "read_only",
+      "sensitivity": "public",
+      "parameters": {
+        "input": "string",
+        "mode": "{encode|decode}?"
+      },
+      "required_parameters": [
+        "input"
+      ],
+      "developer_tool": "url"
+    },
+    {
+      "id": "hash.generate",
+      "description": "生成 MD5、SHA-1、SHA-256 与 SHA-512 摘要",
+      "risk": "read_only",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "algorithm": "hash_algorithm?",
+        "input": "string"
+      },
+      "required_parameters": [
+        "input"
+      ],
+      "developer_tool": "hash"
+    },
+    {
+      "id": "password.generate",
+      "description": "按字符类型与长度生成随机密码",
+      "risk": "read_only",
+      "sensitivity": "sensitive",
+      "parameters": {
+        "digits": "bool?",
+        "length": "usize?",
+        "lowercase": "bool?",
+        "symbols": "bool?",
+        "uppercase": "bool?"
+      },
+      "required_parameters": [],
+      "developer_tool": "password-generator"
+    },
+    {
+      "id": "uuid.generate",
+      "description": "生成 UUID v1、v4/GUID 或 v7",
+      "risk": "read_only",
+      "sensitivity": "public",
+      "parameters": {
+        "version": "{v1|v4|v7}?"
+      },
+      "required_parameters": [],
+      "developer_tool": "uuid"
+    },
+    {
+      "id": "image.convert",
+      "description": "将图片转换为 PNG、WebP 或 BMP，无额外有损压缩",
+      "risk": "write",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "format": "{png|webp|bmp}?",
+        "path": "relative_path"
+      },
+      "required_parameters": [
+        "path"
+      ],
+      "developer_tool": "image-converter"
+    },
+    {
+      "id": "regex.test",
+      "description": "编译表达式并列出文本中的匹配与捕获组",
+      "risk": "read_only",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "ignore_case": "bool?",
+        "pattern": "string",
+        "test_text": "string"
+      },
+      "required_parameters": [
+        "pattern",
+        "test_text"
+      ],
+      "developer_tool": "regex"
+    },
+    {
+      "id": "sticky_note.create",
+      "description": "创建普通便签",
+      "risk": "write",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "content": "string"
+      },
+      "required_parameters": [
+        "content"
+      ]
+    },
+    {
+      "id": "password.create",
+      "description": "在密码保险箱中创建凭据",
+      "risk": "critical",
+      "sensitivity": "sensitive",
+      "parameters": {
+        "name": "string?",
+        "secret": "secret_handle",
+        "url": "url?",
+        "username": "string?"
+      },
+      "required_parameters": [
+        "secret"
+      ]
+    },
+    {
+      "id": "file.open",
+      "description": "打开文档",
+      "risk": "write",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "path": "relative_path"
+      },
+      "required_parameters": [
+        "path"
+      ],
+      "agent_capability": "document.open"
+    },
+    {
+      "id": "file.search",
+      "description": "在当前工作区搜索文件",
+      "risk": "read_only",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "query": "string"
+      },
+      "required_parameters": [
+        "query"
+      ]
+    },
+    {
+      "id": "calendar.note.create",
+      "description": "创建日历笔记",
+      "risk": "high",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "date": "YYYY-MM-DD",
+        "markdown": "string"
+      },
+      "required_parameters": [
+        "date",
+        "markdown"
+      ],
+      "agent_capability": "calendar.create_note"
+    },
+    {
+      "id": "whiteboard.element.create",
+      "description": "创建白板元素",
+      "risk": "high",
+      "sensitivity": "workspace_content",
+      "parameters": {
+        "element": "object"
+      },
+      "required_parameters": [
+        "element"
+      ],
+      "agent_capability": "whiteboard.create_element"
+    },
+    {
+      "id": "git.status",
+      "description": "读取 Git 状态",
+      "risk": "read_only",
+      "sensitivity": "workspace_content",
+      "parameters": {},
+      "required_parameters": [],
+      "agent_capability": "git.status"
+    },
+    {
+      "id": "terminal.open",
+      "description": "创建真实 PTY",
+      "risk": "critical",
+      "sensitivity": "workspace_content",
+      "parameters": {},
+      "required_parameters": [],
+      "agent_capability": "terminal.create"
+    }
+  ]
+}

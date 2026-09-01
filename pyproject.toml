@@ -1,0 +1,20 @@
+[project]
+name = "lance-ml"
+version = "0.1.0"
+description = "思芽岛智能工具路由模型训练环境"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy",
+    "onnx",
+    "onnxruntime",
+    "onnxscript",
+    "safetensors",
+    "scikit-learn",
+    "sentencepiece",
+    "torch",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+]
