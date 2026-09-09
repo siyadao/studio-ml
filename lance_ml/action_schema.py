@@ -10,7 +10,6 @@ from pathlib import Path
 
 
 ML_ROOT = Path(__file__).resolve().parents[1]
-REPO_ROOT = ML_ROOT.parent
 DATA_DIR = ML_ROOT / "data"
 DEFAULT_ACTIONS_PATH = DATA_DIR / "actions.json"
 
@@ -48,9 +47,14 @@ class ActionSchema:
         return {action.id: action for action in self.actions}
 
 
-def export_action_schema(output: Path = DEFAULT_ACTIONS_PATH) -> None:
+def export_action_schema(studio_root: Path, output: Path = DEFAULT_ACTIONS_PATH) -> None:
     """export_action_schema 调用 Rust 导出器生成权威 actions.json。"""
 
+    studio_root = studio_root.resolve()
+    manifest = studio_root / "Cargo.toml"
+    exporter = studio_root / "src" / "bin" / "export-smart-actions.rs"
+    if not manifest.is_file() or not exporter.is_file():
+        raise ValueError(f"不是有效的 lance-studio 仓库: {studio_root}")
     output.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
         [
@@ -62,18 +66,25 @@ def export_action_schema(output: Path = DEFAULT_ACTIONS_PATH) -> None:
             "--",
             str(output),
         ],
-        cwd=REPO_ROOT,
+        cwd=studio_root,
         check=True,
     )
 
 
 def load_action_schema(
-    path: Path = DEFAULT_ACTIONS_PATH, *, refresh: bool = False
+    path: Path = DEFAULT_ACTIONS_PATH,
+    *,
+    refresh: bool = False,
+    studio_root: Path | None = None,
 ) -> ActionSchema:
     """load_action_schema 导出或读取并严格校验动作 Schema。"""
 
-    if refresh or not path.exists():
-        export_action_schema(path)
+    if refresh:
+        if studio_root is None:
+            raise ValueError("刷新动作 Schema 时必须指定 lance-studio 仓库")
+        export_action_schema(studio_root, path)
+    elif not path.is_file():
+        raise FileNotFoundError(f"动作 Schema 快照不存在: {path}")
 
     payload = json.loads(path.read_text(encoding="utf-8"))
     expected_root = {"schema_version", "agent_protocol_version", "actions"}

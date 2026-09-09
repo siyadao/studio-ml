@@ -9,12 +9,11 @@ from pathlib import Path
 
 import joblib
 
-from .action_schema import DATA_DIR, ML_ROOT, REPO_ROOT
+from .action_schema import DATA_DIR, ML_ROOT
 from .dataset import load_jsonl, model_text
 
 
 DEFAULT_ARTIFACT_DIR = ML_ROOT / "artifacts" / "baseline"
-DEFAULT_WORKER = REPO_ROOT / "target" / "debug" / "siyadao-model-worker"
 
 
 def parse_args() -> argparse.Namespace:
@@ -23,7 +22,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="校验 Rust 智能路由 Worker")
     parser.add_argument("--data-dir", type=Path, default=DATA_DIR)
     parser.add_argument("--artifact-dir", type=Path, default=DEFAULT_ARTIFACT_DIR)
-    parser.add_argument("--worker", type=Path, default=DEFAULT_WORKER)
+    parser.add_argument("--worker", type=Path, required=True)
     parser.add_argument("--split", choices=("validation", "test"), default="test")
     return parser.parse_args()
 

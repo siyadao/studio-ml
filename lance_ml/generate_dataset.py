@@ -586,7 +586,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="生成智能工具路由训练数据")
     parser.add_argument("--output-dir", type=Path, default=DATA_DIR)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
-    parser.add_argument("--refresh-actions", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--refresh-actions", action="store_true")
+    parser.add_argument(
+        "--studio-root",
+        type=Path,
+        help="刷新动作 Schema 时使用的 lance-studio 仓库路径",
+    )
     return parser.parse_args()
 
 
@@ -768,7 +773,11 @@ def main() -> None:
     output_dir = args.output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     actions_path = output_dir / "actions.json"
-    schema = load_action_schema(actions_path, refresh=args.refresh_actions)
+    schema = load_action_schema(
+        actions_path,
+        refresh=args.refresh_actions,
+        studio_root=args.studio_root,
+    )
     schema_ids = set(schema.by_id)
     language_ids = set(LANGUAGE_SPECS)
     if schema_ids != language_ids:

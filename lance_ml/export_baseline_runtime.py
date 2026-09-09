@@ -11,14 +11,14 @@ from pathlib import Path
 import joblib
 import numpy as np
 
-from .action_schema import DATA_DIR, ML_ROOT, REPO_ROOT, load_action_schema
+from .action_schema import DATA_DIR, ML_ROOT, load_action_schema
 from .dataset import load_manifest
 
 
 MODEL_MAGIC = b"SYMODEL2"
 MODEL_FORMAT_VERSION = 1
 DEFAULT_ARTIFACT_DIR = ML_ROOT / "artifacts" / "baseline"
-DEFAULT_OUTPUT = REPO_ROOT / "assets" / "models" / "smart-input-baseline.bin"
+DEFAULT_OUTPUT = ML_ROOT / "artifacts" / "runtime" / "smart-input-baseline.bin"
 
 
 def parse_args() -> argparse.Namespace:
