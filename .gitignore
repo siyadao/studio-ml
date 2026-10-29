@@ -6,3 +6,5 @@ __pycache__/
 *.ses
 artifacts/
 checkpoints/
+# Cursor 本地调试会话日志，勿入库
+.cursor/
